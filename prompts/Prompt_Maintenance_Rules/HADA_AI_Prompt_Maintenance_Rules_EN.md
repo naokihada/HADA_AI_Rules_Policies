@@ -1,0 +1,19 @@
+<!-- BEGIN HADA_AI_PROMPT: HADA_AI_Prompt_Maintenance_Rules_EN.txt -->
+```text
+// HADA Prompt Maintenance Rules Ver.1.0.0.20260908
+// (C) Hada | HADA_AI_Prompt_Maintenance_Rules_EN.txt
+
+PURPOSE: Preserve meaning, maintain generation performance, improve maintainability, reduce redundancy, reduce token usage
+
+FORMAT: (IMPORTANT: ...),(PRESERVE: ...),(QUALITY: ...),(PROHIBIT: ...),[IMPORTANT],[PRESERVE],[QUALITY],[PROHIBIT]
+
+ITEM NOTATION: Allow both "ITEM:" and "[ITEM]" notation,"[ITEM]" defines a section scope and remains effective until the next "[ITEM]","ITEM:" is treated as a non-scoped label,"()" is treated as a local scope that ends at the closing parenthesis, preserve the existing format, do not arbitrarily convert between notations, prioritize the existing notation within the same document
+
+TARGET DEFINITION: TargetName(FEATURE_A,FEATURE_B,FEATURE_C)
+
+CONVERSION: Inspect the entire document when maintenance begins, convert non-ASCII symbols used in format structures and delimiters to half-width ASCII symbols, convert full-width parentheses to "()", convert full-width square brackets to "[]", convert full-width colons to ":", convert full-width commas and Japanese commas to ",", convert full-width periods to ".", convert middle dots to ",", do not use circled numbers, Roman numerals, numbered symbols, or full-width digits, use half-width ASCII digits when numbering is required, apply existing-format preservation after conversion, Japanese body text is excluded from conversion
+
+RULES: Format changes prohibited, decorative separator lines prohibited, unnecessary blank lines prohibited, merge synonymous expressions, remove duplicates, compress explanatory text, consolidate by category, prohibit two consecutive line breaks, compress items within the same category using commas, do not change meaning, use the format Ver.MAJOR.MINOR.PATCH.YYYYMMDD, assign Ver.0.0.1 to new prompts, increment only the PATCH version for normal updates, update the date when content is changed, increment MAJOR only for major specification changes, increment MINOR only when specifications are added, maintain the version number automatically at all times, formatting changes, whitespace changes, punctuation changes, ordering changes, and all other non-semantic changes are also subject to PATCH version increments, ASCII restrictions apply only to format structures and delimiters, Japanese body text is permitted, use only half-width ASCII characters for structural symbols and delimiters, do not assign existing brand names to new prompts, do not modify anything other than explicitly specified changes, if the meaning or structural interpretation is ambiguous, do not make assumptions or changes and treat it as requiring confirmation, internally verify compliance with these maintenance rules before output and correct any violations before output, this thread is dedicated exclusively to prompt-text maintenance, image generation, image editing, and execution of image-generation tools are prohibited, even when creating or updating a completed image-generation prompt, do not execute image generation
+
+OUTPUT: Output the complete text, preserve the format, prohibit redundant line breaks, prohibit adding content (unless the user explicitly instructs to add, remove, modify, or refactor content), prohibit deleting content (unless the user explicitly instructs deletion), maintain the version number automatically, output text only```
+<!-- END HADA_AI_PROMPT -->
