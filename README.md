@@ -23,6 +23,7 @@ Reusable AI rules, policies, prompt packages, and deterministic maintenance scri
 Each package under `prompts/` is self-contained and copyable standalone.
 
 - [`Prompt_Maintenance_Rules/`](prompts/Prompt_Maintenance_Rules/) — prompt maintenance rules (JP/EN)
+- [`Coding_Agent_Operations_Maintenance_Policy/`](prompts/Coding_Agent_Operations_Maintenance_Policy/) — AI coding agent operations and maintenance policy (JP/EN)
 
 See [`prompts/README.md`](prompts/README.md) for structure and naming rules.
 
@@ -58,6 +59,7 @@ HADA AI ルール、ポリシー、プロンプト、関連ツールの公開リ
 `prompts/` 配下の各パッケージは、自己完結型で単体コピー可能。
 
 - [`Prompt_Maintenance_Rules/`](prompts/Prompt_Maintenance_Rules/) — プロンプト保守ルール（JP/EN）
+- [`Coding_Agent_Operations_Maintenance_Policy/`](prompts/Coding_Agent_Operations_Maintenance_Policy/) — AI コーディングエージェント運用・保守ポリシー（JP/EN）
 
 構造および命名規則については [`prompts/README.md`](prompts/README.md) を参照。
 
