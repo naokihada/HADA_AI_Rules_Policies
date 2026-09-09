@@ -31,6 +31,7 @@ Prompt_Name/
 
 - [`Prompt_Maintenance_Rules/`](Prompt_Maintenance_Rules/) — prompt maintenance rules (JP/EN)
 - [`Coding_Agent_Operations_Maintenance_Policy/`](Coding_Agent_Operations_Maintenance_Policy/) — AI coding agent operations and maintenance policy (JP/EN)
+- [`Character_Face_Reference_Image_Generation_Prompt/`](Character_Face_Reference_Image_Generation_Prompt/) — character face reference image generation prompt (JP/EN)
 
 Conventions: see Package Layout above.
 
@@ -70,6 +71,7 @@ Prompt_Name/
 
 - [`Prompt_Maintenance_Rules/`](Prompt_Maintenance_Rules/) — プロンプト保守ルール（JP/EN）
 - [`Coding_Agent_Operations_Maintenance_Policy/`](Coding_Agent_Operations_Maintenance_Policy/) — AI コーディングエージェント運用・保守ポリシー（JP/EN）
+- [`Character_Face_Reference_Image_Generation_Prompt/`](Character_Face_Reference_Image_Generation_Prompt/) — キャラクター顔リファレンス画像生成プロンプト（JP/EN）
 
 規約: 上記 Package Layout を参照。
 

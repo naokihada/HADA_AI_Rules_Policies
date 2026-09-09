@@ -1,5 +1,14 @@
 #!/usr/bin/env python3
-"""Sync canonical .txt prompt artifacts into .md managed-region mirrors."""
+"""Sync canonical .txt prompt artifacts into .md managed-region mirrors.
+
+Safety guarantees:
+- .txt is the source of truth; this script never modifies .txt files.
+- Only the Managed Region body inside an existing .md is updated.
+- The full .md file is never regenerated; content outside the Managed Region is preserved.
+- Malformed or missing Managed Region markers cause FAIL (no bootstrap/write of full .md).
+- UTF-8 encoding; no content normalization beyond replacing the Managed Region body.
+- Idempotent when canonical .txt and mirror body already match.
+"""
 
 from __future__ import annotations
 
@@ -118,6 +127,9 @@ def sync_txt_md_pair(
     except ValueError as exc:
         return "error", SyncError(package_name, rel_txt, str(exc))
 
+    if txt_content == "":
+        return "error", SyncError(package_name, rel_txt, "canonical .txt is empty")
+
     region_error = validate_managed_region(md_content, txt_path.name)
     if region_error:
         return "error", SyncError(package_name, md_path.name, region_error)
@@ -129,7 +141,7 @@ def sync_txt_md_pair(
 
     new_md_content = replace_managed_body(md_content, txt_content)
     if not dry_run:
-        md_path.write_text(new_md_content, encoding=ENCODING)
+        md_path.write_text(new_md_content, encoding=ENCODING, newline="\n")
 
     return "updated", None
 

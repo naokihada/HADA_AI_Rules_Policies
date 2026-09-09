@@ -92,10 +92,31 @@ def extract_managed_body(md_content: str, expected_txt_name: str) -> tuple[str |
             f"found '{referenced_name}'"
         )
 
-    return match.group("body"), None
+    body = match.group("body")
+    if body == "":
+        return None, "managed region is empty"
+
+    return body, None
 
 
-def validate_txt_md_pair(package_name: str, txt_path: Path, md_path: Path) -> list[CheckError]:
+def build_canonical_index(prompts_dir: Path) -> dict[tuple[str, str], str]:
+    index: dict[tuple[str, str], str] = {}
+    for package_dir in discover_packages(prompts_dir):
+        for txt_path in sorted(package_dir.glob(CANONICAL_TXT_GLOB)):
+            if txt_path.is_file():
+                try:
+                    index[(package_dir.name, txt_path.name)] = read_text(txt_path)
+                except ValueError:
+                    continue
+    return index
+
+
+def validate_txt_md_pair(
+    package_name: str,
+    txt_path: Path,
+    md_path: Path,
+    canonical_index: dict[tuple[str, str], str] | None = None,
+) -> list[CheckError]:
     errors: list[CheckError] = []
     target = txt_path.name
 
@@ -104,6 +125,15 @@ def validate_txt_md_pair(package_name: str, txt_path: Path, md_path: Path) -> li
 
     if not md_path.exists():
         return [CheckError(package_name, target, f"mirror .md missing: {md_path.name}")]
+
+    if md_path.name != f"{txt_path.stem}.md":
+        return [
+            CheckError(
+                package_name,
+                md_path.name,
+                f"1:1 mapping violation: expected mirror '{txt_path.stem}.md'",
+            )
+        ]
 
     try:
         txt_content = read_text(txt_path)
@@ -125,6 +155,22 @@ def validate_txt_md_pair(package_name: str, txt_path: Path, md_path: Path) -> li
             )
         )
 
+    if canonical_index is not None and body != txt_content:
+        pair_key = (package_name, txt_path.name)
+        for (other_package, other_name), other_content in canonical_index.items():
+            if (other_package, other_name) == pair_key:
+                continue
+            if other_content == body:
+                errors.append(
+                    CheckError(
+                        package_name,
+                        md_path.name,
+                        "cross-package canonical artifact detected: "
+                        f"managed region matches {other_package}/{other_name}",
+                    )
+                )
+                break
+
     return errors
 
 
@@ -134,7 +180,10 @@ def discover_packages(prompts_dir: Path) -> list[Path]:
     return sorted(path for path in prompts_dir.iterdir() if path.is_dir())
 
 
-def validate_package(package_dir: Path) -> tuple[int, list[CheckError]]:
+def validate_package(
+    package_dir: Path,
+    canonical_index: dict[tuple[str, str], str],
+) -> tuple[int, list[CheckError]]:
     package_name = package_dir.name
     errors: list[CheckError] = []
     pairs_checked = 0
@@ -146,11 +195,31 @@ def validate_package(package_dir: Path) -> tuple[int, list[CheckError]]:
     for txt_path in txt_files:
         md_path = txt_path.with_suffix(".md")
         pairs_checked += 1
-        errors.extend(validate_txt_md_pair(package_name, txt_path, md_path))
+        errors.extend(
+            validate_txt_md_pair(
+                package_name,
+                txt_path,
+                md_path,
+                canonical_index=canonical_index,
+            )
+        )
 
     for md_path in sorted(package_dir.glob("HADA_AI_*.md")):
         if not md_path.is_file():
             continue
+
+        expected_txt_name = f"{md_path.stem}.txt"
+        expected_txt_path = package_dir / expected_txt_name
+        if not expected_txt_path.is_file():
+            errors.append(
+                CheckError(
+                    package_name,
+                    md_path.name,
+                    f"mirror .md has no corresponding canonical .txt: {expected_txt_name}",
+                )
+            )
+            continue
+
         try:
             md_content = read_text(md_path)
         except ValueError as exc:
@@ -158,6 +227,13 @@ def validate_package(package_dir: Path) -> tuple[int, list[CheckError]]:
             continue
 
         if BEGIN_MARKER not in md_content:
+            errors.append(
+                CheckError(
+                    package_name,
+                    md_path.name,
+                    "managed region missing: mirror treated as canonical artifact",
+                )
+            )
             continue
 
         begin_count = count_markers(md_content, BEGIN_MARKER)
@@ -176,13 +252,26 @@ def validate_package(package_dir: Path) -> tuple[int, list[CheckError]]:
             errors.append(CheckError(package_name, md_path.name, "malformed BEGIN marker"))
             continue
 
-        referenced_txt = package_dir / match.group(1)
+        referenced_name = match.group(1)
+        if referenced_name != expected_txt_name:
+            errors.append(
+                CheckError(
+                    package_name,
+                    md_path.name,
+                    "1:1 mapping violation: "
+                    f"BEGIN marker references '{referenced_name}', "
+                    f"expected '{expected_txt_name}'",
+                )
+            )
+            continue
+
+        referenced_txt = package_dir / referenced_name
         if not referenced_txt.exists():
             errors.append(
                 CheckError(
                     package_name,
                     md_path.name,
-                    f"referenced canonical .txt missing: {match.group(1)}",
+                    f"referenced canonical .txt missing in package: {referenced_name}",
                 )
             )
 
@@ -198,9 +287,11 @@ def validate_prompts(prompts_dir: Path) -> CheckResult:
         )
         return result
 
+    canonical_index = build_canonical_index(prompts_dir)
+
     for package_dir in discover_packages(prompts_dir):
         result.packages_checked += 1
-        pairs_checked, errors = validate_package(package_dir)
+        pairs_checked, errors = validate_package(package_dir, canonical_index)
         result.pairs_checked += pairs_checked
         result.errors.extend(errors)
 
