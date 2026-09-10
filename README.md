@@ -24,6 +24,9 @@ Each package under `prompts/` is self-contained and copyable standalone.
 - [`Prompt_Maintenance_Rules/`](prompts/Prompt_Maintenance_Rules/) — prompt maintenance rules (JP/EN)
 - [`Coding_Agent_Operations_Maintenance_Policy/`](prompts/Coding_Agent_Operations_Maintenance_Policy/) — AI coding agent operations and maintenance policy (JP/EN)
 - [`Character_Face_Reference_Image_Generation_Prompt/`](prompts/Character_Face_Reference_Image_Generation_Prompt/) — character face reference image generation prompt (JP/EN)
+- [`Coding_Agent_Multi_Agent_Compatibility_Prompt/`](prompts/Coding_Agent_Multi_Agent_Compatibility_Prompt/) — coding agent multi-agent compatibility prompt (JP/EN)
+- [`Existing_Project_SPEC_Reverse_Engineering_Prompt/`](prompts/Existing_Project_SPEC_Reverse_Engineering_Prompt/) — existing project SPEC reverse engineering prompt (JP/EN)
+- [`GitHub_Release_Template_Upgrade_Prompt/`](prompts/GitHub_Release_Template_Upgrade_Prompt/) — GitHub release template upgrade prompt (JP/EN)
 
 See [`prompts/README.md`](prompts/README.md) for structure and naming rules.
 
@@ -60,6 +63,9 @@ HADA AI ルール、ポリシー、プロンプト、関連ツールの公開リ
 - [`Prompt_Maintenance_Rules/`](prompts/Prompt_Maintenance_Rules/) — プロンプト保守ルール（JP/EN）
 - [`Coding_Agent_Operations_Maintenance_Policy/`](prompts/Coding_Agent_Operations_Maintenance_Policy/) — AI コーディングエージェント運用・保守ポリシー（JP/EN）
 - [`Character_Face_Reference_Image_Generation_Prompt/`](prompts/Character_Face_Reference_Image_Generation_Prompt/) — キャラクター顔リファレンス画像生成プロンプト（JP/EN）
+- [`Coding_Agent_Multi_Agent_Compatibility_Prompt/`](prompts/Coding_Agent_Multi_Agent_Compatibility_Prompt/) — コーディングエージェント多エージェント互換プロンプト（JP/EN）
+- [`Existing_Project_SPEC_Reverse_Engineering_Prompt/`](prompts/Existing_Project_SPEC_Reverse_Engineering_Prompt/) — 既存プロジェクト SPEC 逆解析プロンプト（JP/EN）
+- [`GitHub_Release_Template_Upgrade_Prompt/`](prompts/GitHub_Release_Template_Upgrade_Prompt/) — GitHub Release テンプレートアップグレードプロンプト（JP/EN）
 
 構造および命名規則については [`prompts/README.md`](prompts/README.md) を参照。
 
