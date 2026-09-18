@@ -1,0 +1,18 @@
+manifest_version: "1.0"
+
+template:
+  id: "hada-ai-rules-policies"
+  name: "HADA AI Rules & Policies"
+  version: "0.2.0"
+  release: "v0.2.0"
+
+repository:
+  dev: "HADA_AI_Rules_Policies_Dev"
+  public: "HADA_AI_Rules_Policies"
+
+compatibility:
+  schema_version: "1.0.0"
+  data_format_version: "1.0.0"
+
+files:
+  template_base: "TEMPLATE_BASE.md"
